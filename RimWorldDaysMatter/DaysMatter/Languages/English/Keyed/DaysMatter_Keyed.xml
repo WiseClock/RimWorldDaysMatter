@@ -12,6 +12,7 @@
   <DM.Tab.BuiltIn.ChronologicalBirthday>Chronological birthdays</DM.Tab.BuiltIn.ChronologicalBirthday>
   <DM.Tab.BuiltIn.RelationshipAnniversary>Relationship anniversaries</DM.Tab.BuiltIn.RelationshipAnniversary>
   <DM.Tab.BuiltIn.MarriageAnniversary>Marriage anniversaries</DM.Tab.BuiltIn.MarriageAnniversary>
+  <DM.Tab.Misc.ShowAll>Show all</DM.Tab.Misc.ShowAll>
 
   <!-- tab duration list -->
   <DM.Tab.Duration.None>None</DM.Tab.Duration.None>
@@ -41,4 +42,8 @@
   <DM.Letter.RelationshipAnniversaryParty>{0} and {1}'s relationship party</DM.Letter.RelationshipAnniversaryParty>
   <DM.Letter.MarriageAnniversaryParty>{0} and {1}'s marriage party</DM.Letter.MarriageAnniversaryParty>
   <DM.Letter.CustomDayParty>A party for {0}</DM.Letter.CustomDayParty>
+
+  <!-- settings -->
+  <DM.Settings.PrivateAnniversaries>The world of two</DM.Settings.PrivateAnniversaries>
+  <DM.Settings.PrivateAnniversaries.Desc>Unrelated people will not attend anniversary parties.</DM.Settings.PrivateAnniversaries.Desc>
 </LanguageData>

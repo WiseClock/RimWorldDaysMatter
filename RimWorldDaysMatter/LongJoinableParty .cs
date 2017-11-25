@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using Verse.AI.Group;
 
@@ -8,10 +9,12 @@ namespace RimWorldDaysMatter
     {
         private IntVec3 _spot;
         private Trigger_TicksPassed _timeoutTrigger;
+        private readonly List<Pawn> _invited;
 
-        public LongJoinableParty(IntVec3 spot)
+        public LongJoinableParty(IntVec3 spot, List<Pawn> invited = null)
         {
             _spot = spot;
+            _invited = invited;
         }
 
         private bool ShouldBeCalledOff()
@@ -66,9 +69,11 @@ namespace RimWorldDaysMatter
             return _timeoutTrigger.TicksLeft < 1200;
         }
 
-        private bool IsInvited(Thing p)
+        private bool IsInvited(Pawn p)
         {
-            return p.Faction == lord.faction;
+            if (_invited == null)
+                return p.Faction == lord.faction;
+            return _invited.Contains(p);
         }
     }
 }

@@ -12,6 +12,7 @@
   <DM.Tab.BuiltIn.ChronologicalBirthday>历法生日</DM.Tab.BuiltIn.ChronologicalBirthday>
   <DM.Tab.BuiltIn.RelationshipAnniversary>交往纪念日</DM.Tab.BuiltIn.RelationshipAnniversary>
   <DM.Tab.BuiltIn.MarriageAnniversary>结婚纪念日</DM.Tab.BuiltIn.MarriageAnniversary>
+  <DM.Tab.Misc.ShowAll>显示全部</DM.Tab.Misc.ShowAll>
 
   <!-- tab duration list -->
   <DM.Tab.Duration.None>无</DM.Tab.Duration.None>
@@ -41,4 +42,8 @@
   <DM.Letter.RelationshipAnniversaryParty>{0}和{1}的交往纪念派对</DM.Letter.RelationshipAnniversaryParty>
   <DM.Letter.MarriageAnniversaryParty>{0}和{1}的结婚纪念派对</DM.Letter.MarriageAnniversaryParty>
   <DM.Letter.CustomDayParty>{0}的聚会</DM.Letter.CustomDayParty>
+
+  <!-- settings -->
+  <DM.Settings.PrivateAnniversaries>二人世界</DM.Settings.PrivateAnniversaries>
+  <DM.Settings.PrivateAnniversaries.Desc>其他人将不参与交往和结婚纪念日派对</DM.Settings.PrivateAnniversaries.Desc>
 </LanguageData>

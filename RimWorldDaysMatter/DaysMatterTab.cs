@@ -21,6 +21,7 @@ namespace RimWorldDaysMatter
         private const int ROW_ADD_WIDTH = 600;
 
         private const int LBL_DATE_WIDTH = 50;
+        private const int BTN_DATE_CONTROL_WIDTH = 12;
         private const int BTN_SEASON_WIDTH = 100;
         private const int BTN_DURATION_WIDTH = 100;
         private const int BTN_DELETE_WIDTH = 24;
@@ -96,6 +97,9 @@ namespace RimWorldDaysMatter
                 {
                     _store.Birthdays = duration;
                 });
+            }, "DM.Tab.Misc.ShowAll".Translate(), () =>
+            {
+                Find.WindowStack.Add(new DialogList(DialogList.ListType.Birthdays));
             });
 
             // lovers anniversaries
@@ -105,6 +109,9 @@ namespace RimWorldDaysMatter
                 {
                     _store.LoversAnniversaries = duration;
                 });
+            }, "DM.Tab.Misc.ShowAll".Translate(), () =>
+            {
+                Find.WindowStack.Add(new DialogList(DialogList.ListType.Relationships));
             });
 
             // marriage anniversaries
@@ -114,6 +121,9 @@ namespace RimWorldDaysMatter
                 {
                     _store.MarriageAnniversaries = duration;
                 });
+            }, "DM.Tab.Misc.ShowAll".Translate(), () =>
+            {
+                Find.WindowStack.Add(new DialogList(DialogList.ListType.Marriages));
             });
 
             for (int index = 0; index < list.Count; index++)
@@ -135,7 +145,7 @@ namespace RimWorldDaysMatter
             Widgets.EndScrollView();
         }
 
-        private void DrawRowWithNoDate(Rect rect, ref Vector2 cur, string name, Duration duration, Action action)
+        private void DrawRowWithNoDate(Rect rect, ref Vector2 cur, string name, Duration duration, Action action, string seeAllText, Action seeAllAction)
         {
             Widgets.DrawHighlightIfMouseover(rect);
             GUI.color = new Color(1f, 1f, 1f, 0.2f);
@@ -145,14 +155,20 @@ namespace RimWorldDaysMatter
             GUI.BeginGroup(rect);
 
             Rect rectName = rect.AtZero();
-            rectName.width -= COL_MARGIN * 2 + BTN_DURATION_WIDTH + BTN_DELETE_WIDTH;
+            rectName.width -= COL_MARGIN * 4 + BTN_DURATION_WIDTH + BTN_DELETE_WIDTH + BTN_SEASON_WIDTH + LBL_DATE_WIDTH;
             rectName.xMin += COL_MARGIN;
 
-            Rect rectDuration = new Rect(rectName.xMax + COL_MARGIN, 2f, BTN_DURATION_WIDTH, rect.height - 4f);
+            Rect rectSeeAll = new Rect(rectName.xMax + COL_MARGIN, 2f, BTN_SEASON_WIDTH + COL_MARGIN + LBL_DATE_WIDTH, rect.height - 4f);
+            Rect rectDuration = new Rect(rectSeeAll.xMax + COL_MARGIN, 2f, BTN_DURATION_WIDTH, rect.height - 4f);
 
             Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(rectName, name);
             Text.Anchor = TextAnchor.UpperLeft;
+
+            if (Widgets.ButtonText(rectSeeAll, seeAllText))
+            {
+                seeAllAction();
+            }
 
             if (Widgets.ButtonText(rectDuration, duration.Label()))
             {
@@ -272,8 +288,12 @@ namespace RimWorldDaysMatter
             rectName.xMin += COL_MARGIN;
 
             Rect rectSeason = new Rect(rectName.xMax + COL_MARGIN, 2f, BTN_SEASON_WIDTH, rect.height - 4f);
-            Rect rectDate = new Rect(rectSeason.xMax + COL_MARGIN, 0f, LBL_DATE_WIDTH, rect.height);
-            Rect rectDuration = new Rect(rectDate.xMax + COL_MARGIN, 2f, BTN_DURATION_WIDTH, rect.height - 4f);
+
+            Rect rectDateMinus = new Rect(rectSeason.xMax + COL_MARGIN, (rect.height - BTN_DATE_CONTROL_WIDTH) / 2f, BTN_DATE_CONTROL_WIDTH, BTN_DATE_CONTROL_WIDTH);
+            Rect rectDate = new Rect(rectDateMinus.xMax, 0f, LBL_DATE_WIDTH - BTN_DATE_CONTROL_WIDTH * 2, rect.height);
+            Rect rectDatePlus = new Rect(rectDate.xMax, (rect.height - BTN_DATE_CONTROL_WIDTH) / 2f, BTN_DATE_CONTROL_WIDTH, BTN_DATE_CONTROL_WIDTH);
+
+            Rect rectDuration = new Rect(rectDatePlus.xMax + COL_MARGIN, 2f, BTN_DURATION_WIDTH, rect.height - 4f);
             Rect btnDeleteRect = new Rect(rectDuration.xMax + COL_MARGIN, Mathf.RoundToInt((ROW_HEIGHT - BTN_DELETE_HEIGHT) / 2f), BTN_DELETE_WIDTH, BTN_DELETE_HEIGHT);
             
             Text.Anchor = TextAnchor.MiddleLeft;
@@ -301,6 +321,22 @@ namespace RimWorldDaysMatter
             if (Widgets.ButtonImage(btnDeleteRect, Textures.ROW_DELETE))
             {
                 _store.MatteredDays.RemoveAt(index);
+                SoundDefOf.Click.PlayOneShotOnCamera();
+            }
+
+            if (Widgets.ButtonImage(rectDateMinus, Textures.DAY_MINUS))
+            {
+                int tmp = matteredDay.DayOfQuadrum - 1;
+                if (tmp < 1) tmp = 1;
+                matteredDay.DayOfQuadrum = tmp;
+                SoundDefOf.Click.PlayOneShotOnCamera();
+            }
+
+            if (Widgets.ButtonImage(rectDatePlus, Textures.DAY_PLUS))
+            {
+                int tmp = matteredDay.DayOfQuadrum + 1;
+                if (tmp > 15) tmp = 15;
+                matteredDay.DayOfQuadrum = tmp;
                 SoundDefOf.Click.PlayOneShotOnCamera();
             }
 

@@ -54,9 +54,11 @@
   <ItemGroup>
     <Compile Include="DaysMatter.cs" />
     <Compile Include="DaysMatterTab.cs" />
+    <Compile Include="DialogList.cs" />
     <Compile Include="DialogRename.cs" />
     <Compile Include="Duration.cs" />
     <Compile Include="DurationUtil.cs" />
+    <Compile Include="JoinableParty.cs" />
     <Compile Include="LongJoinableParty .cs" />
     <Compile Include="MatteredDay.cs" />
     <Compile Include="MatteredDayStore.cs" />

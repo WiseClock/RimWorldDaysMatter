@@ -6,7 +6,9 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Harmony;
+using HugsLib.Core;
 using Verse.AI.Group;
+using HugsLib.Settings;
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantAssignment
 
@@ -14,13 +16,16 @@ namespace RimWorldDaysMatter
 {
     public class DaysMatter : ModBase
     {
+        public static readonly VersionShort VERSION = new VersionShort(0, 18, 2);
         public override string ModIdentifier { get; } = "DaysMatter";
 
+        private SettingHandle<bool> _privateAnniversaries;
         private MatteredDayStore _store;
 
-        public override void Initialize()
+        public override void DefsLoaded()
         {
-            base.Initialize();
+            base.DefsLoaded();
+            _privateAnniversaries = Settings.GetHandle<bool>("DaysMatter.PrivateAnniversaries", "DM.Settings.PrivateAnniversaries".Translate(), "DM.Settings.PrivateAnniversaries.Desc".Translate(), true);
             Log.Message("[DaysMatter] Loaded.");
         }
 
@@ -52,7 +57,7 @@ namespace RimWorldDaysMatter
                 if (hour == 0)
                     Messages.Message("DM.Message.TodaySettlement".Translate(settlementYears), MessageTypeDefOf.PositiveEvent);
                 else
-                    StartParty("DM.Letter.SettlementParty".Translate(), _store.Settlement == Duration.AllDay);
+                    StartParty("DM.Letter.SettlementParty".Translate(), new List<Pawn>(), _store.Settlement == Duration.AllDay);
             }
 
             // check built in days
@@ -81,7 +86,7 @@ namespace RimWorldDaysMatter
                             if (hour == 0)
                                 Messages.Message("DM.Message.TodayMarriageAnniversary".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), MessageTypeDefOf.PositiveEvent);
                             else if (_store.MarriageAnniversaries.Start() == hour)
-                                StartParty("DM.Letter.MarriageAnniversaryParty".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), _store.MarriageAnniversaries == Duration.AllDay);
+                                StartParty("DM.Letter.MarriageAnniversaryParty".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), new List<Pawn> { colonist, relation.otherPawn }, _store.MarriageAnniversaries == Duration.AllDay, colonist);
                         }
                     }
 
@@ -100,7 +105,7 @@ namespace RimWorldDaysMatter
                             if (hour == 0)
                                 Messages.Message("DM.Message.TodayRelationshipAnniversary".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), MessageTypeDefOf.PositiveEvent);
                             else if (_store.LoversAnniversaries.Start() == hour)
-                                StartParty("DM.Letter.RelationshipAnniversaryParty".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), _store.LoversAnniversaries == Duration.AllDay);
+                                StartParty("DM.Letter.RelationshipAnniversaryParty".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), new List<Pawn> { colonist, relation.otherPawn }, _store.LoversAnniversaries == Duration.AllDay, colonist);
                         }
                     }
 
@@ -114,7 +119,7 @@ namespace RimWorldDaysMatter
                         if (hour == 0)
                             Messages.Message("DM.Message.TodayBirthday".Translate(colonist.NameStringShort, colonistAge), MessageTypeDefOf.PositiveEvent);
                         else if (_store.Birthdays.Start() == hour)
-                            StartParty("DM.Letter.BirthdayParty".Translate(colonist.NameStringShort), _store.Birthdays == Duration.AllDay);
+                            StartParty("DM.Letter.BirthdayParty".Translate(colonist.NameStringShort), new List<Pawn>(), _store.Birthdays == Duration.AllDay);
                     }
                 }
             }
@@ -129,16 +134,16 @@ namespace RimWorldDaysMatter
                 if (hour == 0)
                     Messages.Message("DM.Message.TodayCustomDay".Translate(day.Name), MessageTypeDefOf.PositiveEvent);
                 else if (day.Duration.Start() == hour)
-                    StartParty("DM.Letter.CustomDayParty".Translate(day.Name), day.Duration == Duration.AllDay);
+                    StartParty("DM.Letter.CustomDayParty".Translate(day.Name), new List<Pawn>(), day.Duration == Duration.AllDay);
             }
         }
 
-        private void StartParty(string reason, bool wholeDay = false, Pawn starter = null)
+        private void StartParty(string reason, List<Pawn> invited, bool wholeDay = false, Pawn starter = null)
         {
-            TryStartParty(reason, wholeDay, starter);
+            TryStartParty(reason, wholeDay, starter, invited);
         }
 
-        private bool TryStartParty(string reason, bool wholeDay, Pawn starter)
+        private bool TryStartParty(string reason, bool wholeDay, Pawn starter, List<Pawn> invitedPawns)
         {
             Map currentMap = Find.VisibleMap;
 
@@ -162,7 +167,14 @@ namespace RimWorldDaysMatter
                 return false;
             }
 
-            LordJob partyJob = wholeDay ? new LongJoinableParty(intVec) : new LordJob_Joinable_Party(intVec, starter);
+            LordJob partyJob;
+            List<Pawn> invited = null;
+            if (_privateAnniversaries.Value && invitedPawns.Count > 0)
+                invited = invitedPawns;
+            if (wholeDay)
+                partyJob = new LongJoinableParty(intVec, invited);
+            else
+                partyJob = new JoinableParty(intVec, starter, invited);
             LordMaker.MakeNewLord(starter.Faction, partyJob, currentMap);
             
             Find.LetterStack.ReceiveLetter("DM.Letter.PartyTitle".Translate(), "DM.Letter.Party".Translate(reason), LetterDefOf.PositiveEvent, new TargetInfo(intVec, currentMap));
