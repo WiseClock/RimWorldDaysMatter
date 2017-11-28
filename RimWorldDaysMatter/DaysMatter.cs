@@ -9,6 +9,7 @@ using Harmony;
 using HugsLib.Core;
 using Verse.AI.Group;
 using HugsLib.Settings;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantAssignment
 
@@ -68,7 +69,7 @@ namespace RimWorldDaysMatter
                 var colonists = Find.VisibleMap.mapPawns.PawnsInFaction(Faction.OfPlayer);
                 foreach (var colonist in colonists)
                 {
-                    if (colonist.Dead || colonist.NonHumanlikeOrWildMan())
+                    if (colonist.Dead || !colonist.RaceProps.Humanlike)
                         continue;
 
                     // check marriage
@@ -152,7 +153,7 @@ namespace RimWorldDaysMatter
 
             if (starter == null)
             {
-                starter = PartyUtility.FindRandomPartyOrganizer(Faction.OfPlayer, currentMap);
+                starter = PartyUtil.FindRandomPartyOrganizer(Faction.OfPlayer, currentMap);
                 if (starter == null)
                 {
                     Messages.Message("DM.Error.NoStarter".Translate(), MessageTypeDefOf.NegativeEvent);
@@ -161,20 +162,16 @@ namespace RimWorldDaysMatter
             }
             
             IntVec3 intVec;
-            if (!RCellFinder.TryFindPartySpot(starter, out intVec))
+            if (!PartyUtil.TryFindPartySpot(starter, out intVec))
             {
                 Messages.Message("DM.Error.NoSpot".Translate(), MessageTypeDefOf.NegativeEvent);
                 return false;
             }
 
-            LordJob partyJob;
             List<Pawn> invited = null;
             if (_privateAnniversaries.Value && invitedPawns.Count > 0)
                 invited = invitedPawns;
-            if (wholeDay)
-                partyJob = new LongJoinableParty(intVec, invited);
-            else
-                partyJob = new JoinableParty(intVec, starter, invited);
+            LordJob partyJob = wholeDay ? new LongJoinableParty(intVec, invited) : new JoinableParty(intVec, invited);
             LordMaker.MakeNewLord(starter.Faction, partyJob, currentMap);
             
             Find.LetterStack.ReceiveLetter("DM.Letter.PartyTitle".Translate(), "DM.Letter.Party".Translate(reason), LetterDefOf.PositiveEvent, new TargetInfo(intVec, currentMap));
