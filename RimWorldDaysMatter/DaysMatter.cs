@@ -17,7 +17,7 @@ namespace RimWorldDaysMatter
 {
     public class DaysMatter : ModBase
     {
-        public static readonly VersionShort VERSION = new VersionShort(0, 18, 2);
+        public static readonly VersionShort VERSION = new VersionShort(0, 19, 0);
         public override string ModIdentifier { get; } = "DaysMatter";
 
         private SettingHandle<bool> _privateAnniversaries;
@@ -40,10 +40,10 @@ namespace RimWorldDaysMatter
             base.Tick(currentTick);
 
             int ticks = Find.TickManager.TicksAbs;
-            if (ticks % GenDate.TicksPerHour != 0 || Find.VisibleMap == null || _store == null)
+            if (ticks % GenDate.TicksPerHour != 0 || Find.CurrentMap == null || _store == null)
                 return;
 
-            Vector2 location = Find.WorldGrid.LongLatOf(Find.VisibleMap.Tile);
+            Vector2 location = Find.WorldGrid.LongLatOf(Find.CurrentMap.Tile);
             Quadrum quadrum = GenDate.Quadrum(ticks, location.x);
             int dayOfQuadrum = GenDate.DayOfQuadrum(ticks, location.x); // zero based
             int hour = GenDate.HourOfDay(ticks, location.x);
@@ -66,7 +66,7 @@ namespace RimWorldDaysMatter
             {
                 Dictionary<Pawn, DirectPawnRelation> handledRelations = new Dictionary<Pawn, DirectPawnRelation>();
 
-                var colonists = Find.VisibleMap.mapPawns.PawnsInFaction(Faction.OfPlayer);
+                var colonists = Find.CurrentMap.mapPawns.PawnsInFaction(Faction.OfPlayer);
                 foreach (var colonist in colonists)
                 {
                     if (colonist.Dead || !colonist.RaceProps.Humanlike)
@@ -85,9 +85,9 @@ namespace RimWorldDaysMatter
                         if (startDay == dayOfQuadrum && startQuadrum == quadrum)
                         {
                             if (hour == 0)
-                                Messages.Message("DM.Message.TodayMarriageAnniversary".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), MessageTypeDefOf.PositiveEvent);
+                                Messages.Message("DM.Message.TodayMarriageAnniversary".Translate(colonist.Name.ToStringShort, relation.otherPawn.Name.ToStringShort), MessageTypeDefOf.PositiveEvent);
                             else if (_store.MarriageAnniversaries.Start() == hour)
-                                StartParty("DM.Letter.MarriageAnniversaryParty".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), new List<Pawn> { colonist, relation.otherPawn }, _store.MarriageAnniversaries == Duration.AllDay, colonist);
+                                StartParty("DM.Letter.MarriageAnniversaryParty".Translate(colonist.Name.ToStringShort, relation.otherPawn.Name.ToStringShort), new List<Pawn> { colonist, relation.otherPawn }, _store.MarriageAnniversaries == Duration.AllDay, colonist);
                         }
                     }
 
@@ -104,9 +104,9 @@ namespace RimWorldDaysMatter
                         if (startDay == dayOfQuadrum && startQuadrum == quadrum)
                         {
                             if (hour == 0)
-                                Messages.Message("DM.Message.TodayRelationshipAnniversary".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), MessageTypeDefOf.PositiveEvent);
+                                Messages.Message("DM.Message.TodayRelationshipAnniversary".Translate(colonist.Name.ToStringShort, relation.otherPawn.Name.ToStringShort), MessageTypeDefOf.PositiveEvent);
                             else if (_store.LoversAnniversaries.Start() == hour)
-                                StartParty("DM.Letter.RelationshipAnniversaryParty".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), new List<Pawn> { colonist, relation.otherPawn }, _store.LoversAnniversaries == Duration.AllDay, colonist);
+                                StartParty("DM.Letter.RelationshipAnniversaryParty".Translate(colonist.Name.ToStringShort, relation.otherPawn.Name.ToStringShort), new List<Pawn> { colonist, relation.otherPawn }, _store.LoversAnniversaries == Duration.AllDay, colonist);
                         }
                     }
 
@@ -118,9 +118,9 @@ namespace RimWorldDaysMatter
                     if (birthDate == dayOfQuadrum && birthQuadrum == quadrum)
                     {
                         if (hour == 0)
-                            Messages.Message("DM.Message.TodayBirthday".Translate(colonist.NameStringShort, colonistAge), MessageTypeDefOf.PositiveEvent);
+                            Messages.Message("DM.Message.TodayBirthday".Translate(colonist.Name.ToStringShort, colonistAge), MessageTypeDefOf.PositiveEvent);
                         else if (_store.Birthdays.Start() == hour)
-                            StartParty("DM.Letter.BirthdayParty".Translate(colonist.NameStringShort), new List<Pawn>(), _store.Birthdays == Duration.AllDay);
+                            StartParty("DM.Letter.BirthdayParty".Translate(colonist.Name.ToStringShort), new List<Pawn>(), _store.Birthdays == Duration.AllDay);
                     }
                 }
             }
@@ -146,7 +146,7 @@ namespace RimWorldDaysMatter
 
         private bool TryStartParty(string reason, bool wholeDay, Pawn starter, List<Pawn> invitedPawns)
         {
-            Map currentMap = Find.VisibleMap;
+            Map currentMap = Find.CurrentMap;
 
             if (currentMap == null)
                 return false;

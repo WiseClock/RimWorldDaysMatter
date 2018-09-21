@@ -21,12 +21,12 @@ namespace RimWorldDaysMatter
         {
             forcePause = true;
             doCloseX = true;
-            closeOnEscapeKey = true;
+            // closeOnEscapeKey = true;
             closeOnClickedOutside = true;
             absorbInputAroundWindow = true;
 
             int gameStartTick = Find.TickManager.gameStartAbsTick;
-            var colonists = Find.VisibleMap.mapPawns.PawnsInFaction(Faction.OfPlayer);
+            var colonists = Find.CurrentMap.mapPawns.PawnsInFaction(Faction.OfPlayer);
             switch (type)
             {
                 case ListType.Birthdays:
@@ -38,7 +38,7 @@ namespace RimWorldDaysMatter
                         long birthdayTick = colonist.ageTracker.BirthAbsTicks;
                         int birthDate = GenDate.DayOfQuadrum(birthdayTick, 0); // zero based
                         Quadrum birthQuadrum = GenDate.Quadrum(birthdayTick, 0);
-                        _list.Add(new QuadrumDayPair("DM.Letter.BirthdayParty".Translate(colonist.NameStringShort), birthQuadrum, birthDate + 1));
+                        _list.Add(new QuadrumDayPair("DM.Letter.BirthdayParty".Translate(colonist.Name.ToStringShort), birthQuadrum, birthDate + 1));
                     }
                     break;
                 case ListType.Relationships:
@@ -57,7 +57,7 @@ namespace RimWorldDaysMatter
                             int startTick = relation.startTicks + gameStartTick;
                             int startDay = GenDate.DayOfQuadrum(startTick, 0);
                             Quadrum startQuadrum = GenDate.Quadrum(startTick, 0);
-                            _list.Add(new QuadrumDayPair("DM.Letter.RelationshipAnniversaryParty".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), startQuadrum, startDay + 1));
+                            _list.Add(new QuadrumDayPair("DM.Letter.RelationshipAnniversaryParty".Translate(colonist.Name.ToStringShort, relation.otherPawn.Name.ToStringShort), startQuadrum, startDay + 1));
                         }
                     }
                     break;
@@ -77,7 +77,7 @@ namespace RimWorldDaysMatter
                             int startTick = relation.startTicks + gameStartTick;
                             int startDay = GenDate.DayOfQuadrum(startTick, 0);
                             Quadrum startQuadrum = GenDate.Quadrum(startTick, 0);
-                            _list.Add(new QuadrumDayPair("DM.Letter.MarriageAnniversaryParty".Translate(colonist.NameStringShort, relation.otherPawn.NameStringShort), startQuadrum, startDay + 1));
+                            _list.Add(new QuadrumDayPair("DM.Letter.MarriageAnniversaryParty".Translate(colonist.Name.ToStringShort, relation.otherPawn.Name.ToStringShort), startQuadrum, startDay + 1));
                         }
                     }
                     break;

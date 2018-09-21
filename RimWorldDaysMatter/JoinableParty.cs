@@ -11,6 +11,11 @@ namespace RimWorldDaysMatter
         private Trigger_TicksPassed _timeoutTrigger;
         private readonly List<Pawn> _invited;
 
+        public JoinableParty()
+        {
+            
+        }
+
         public JoinableParty(IntVec3 spot, List<Pawn> invited = null)
         {
             _spot = spot;

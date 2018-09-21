@@ -43,7 +43,8 @@ namespace RimWorldDaysMatter
         public DaysMatterTab()
         {
             layer = WindowLayer.GameUI;
-            closeOnEscapeKey = true;
+            // closeOnClickedOutside = true;
+            // closeOnEscapeKey = true;
             // forcePause = true;
             _store = UtilityWorldObjectManager.GetUtilityWorldObject<MatteredDayStore>();
         }

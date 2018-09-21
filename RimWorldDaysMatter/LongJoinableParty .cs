@@ -10,6 +10,11 @@ namespace RimWorldDaysMatter
         {
         }
 
+        public LongJoinableParty() : base()
+        {
+            
+        }
+
         protected override int GetRandomPartyLength()
         {
             return Rand.RangeInclusive(20000, 30000);
