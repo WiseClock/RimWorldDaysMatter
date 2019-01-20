@@ -3,6 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace RimWorldDaysMatter
 {
@@ -16,7 +17,7 @@ namespace RimWorldDaysMatter
 
         public static Pawn FindRandomPartyOrganizer(Faction faction, Map map)
         {
-            Predicate<Pawn> validator = x => x.RaceProps.Humanlike && !x.InBed() && ShouldPawnKeepPartying(x);
+            Predicate<Pawn> validator = x => x.RaceProps.Humanlike && !x.InBed() && ShouldPawnKeepPartying(x) && x.GetLord() == null;
             Pawn result;
             return (from x in map.mapPawns.SpawnedPawnsInFaction(faction)
                 where validator(x)

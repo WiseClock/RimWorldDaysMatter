@@ -16,7 +16,7 @@ namespace RimWorldDaysMatter
             
         }
 
-        public JoinableParty(IntVec3 spot, List<Pawn> invited = null)
+        public JoinableParty(IntVec3 spot, List<Pawn> invited = null, Pawn organizer = null) : base(spot, organizer)
         {
             _spot = spot;
             _invited = invited;

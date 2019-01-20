@@ -171,7 +171,7 @@ namespace RimWorldDaysMatter
             List<Pawn> invited = null;
             if (_privateAnniversaries.Value && invitedPawns.Count > 0)
                 invited = invitedPawns;
-            LordJob partyJob = wholeDay ? new LongJoinableParty(intVec, invited) : new JoinableParty(intVec, invited);
+            LordJob partyJob = wholeDay ? new LongJoinableParty(intVec, invited, starter) : new JoinableParty(intVec, invited, starter);
             LordMaker.MakeNewLord(starter.Faction, partyJob, currentMap);
             
             Find.LetterStack.ReceiveLetter("DM.Letter.PartyTitle".Translate(), "DM.Letter.Party".Translate(reason), LetterDefOf.PositiveEvent, new TargetInfo(intVec, currentMap));
