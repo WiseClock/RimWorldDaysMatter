@@ -5,8 +5,8 @@ namespace RimWorldDaysMatter
 {
     public class LongJoinableParty : JoinableParty
     {
-        public LongJoinableParty(IntVec3 spot, List<Pawn> invited = null)
-            : base(spot, invited)
+        public LongJoinableParty(IntVec3 spot, List<Pawn> invited = null, Pawn organizer = null)
+            : base(spot, invited, organizer)
         {
         }
 
