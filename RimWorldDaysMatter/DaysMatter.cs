@@ -17,7 +17,7 @@ namespace RimWorldDaysMatter
 {
     public class DaysMatter : ModBase
     {
-        public static readonly VersionShort VERSION = new VersionShort(0, 19, 0);
+        public static readonly VersionShort VERSION = new VersionShort(1, 0, 0);
         public override string ModIdentifier { get; } = "DaysMatter";
 
         private SettingHandle<bool> _privateAnniversaries;
