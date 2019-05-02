@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- tab -->
+  <DM.Tab.AddCustomDay>Hinzufügen</DM.Tab.AddCustomDay>
+  <DM.Tab.CustomDayDefaultName>Unbenannter Gedenktag</DM.Tab.CustomDayDefaultName>
+  <DM.Tab.RenameCustomDay>Strg + Linksclick zum Umbennen</DM.Tab.RenameCustomDay>
+  <DM.Tab.TableHeader.Name>Name</DM.Tab.TableHeader.Name>
+  <DM.Tab.TableHeader.Quadrum>Quadrum</DM.Tab.TableHeader.Quadrum>
+  <DM.Tab.TableHeader.Day>Tag</DM.Tab.TableHeader.Day>
+  <DM.Tab.TableHeader.Celebration>Feier</DM.Tab.TableHeader.Celebration>
+  <DM.Tab.BuiltIn.Settlement>Siedlung auf dem Planeten</DM.Tab.BuiltIn.Settlement>
+  <DM.Tab.BuiltIn.ChronologicalBirthday>Chronologische Geburtstage</DM.Tab.BuiltIn.ChronologicalBirthday>
+  <DM.Tab.BuiltIn.RelationshipAnniversary>Beziehungsjubiläens</DM.Tab.BuiltIn.RelationshipAnniversary>
+  <DM.Tab.BuiltIn.MarriageAnniversary>Hochzeitstage</DM.Tab.BuiltIn.MarriageAnniversary>
+  <DM.Tab.Misc.ShowAll>Alle anzeigen</DM.Tab.Misc.ShowAll>
+
+  <!-- tab duration list -->
+  <DM.Tab.Duration.None>None</DM.Tab.Duration.None>
+  <DM.Tab.Duration.AllDay>Den ganzen Tag</DM.Tab.Duration.AllDay>
+  <DM.Tab.Duration.Morning>Morgens</DM.Tab.Duration.Morning>
+  <DM.Tab.Duration.Noon>Mittags</DM.Tab.Duration.Noon>
+  <DM.Tab.Duration.Afternoon>Nachmittag</DM.Tab.Duration.Afternoon>
+  <DM.Tab.Duration.Evening>Abends</DM.Tab.Duration.Evening>
+  <DM.Tab.Duration.Night>Nachts</DM.Tab.Duration.Night>
+
+  <!-- error -->
+  <DM.Error.NoStarter>Es wurde kein verfügbarer Kolonist gefunden, um die Party zu starten</DM.Error.NoStarter>
+  <DM.Error.NoSpot>Es wurde kein Platz gefunden, um die Party zu starten</DM.Error.NoSpot>
+
+  <!-- notification -->
+  <DM.Message.TodayBirthday>Heute ist {0}s {1}ter Geburtstag!</DM.Message.TodayBirthday>
+  <DM.Message.TodayCustomDay>Heute ist {0}!</DM.Message.TodayCustomDay>
+  <DM.Message.TodaySettlement>Die Kolonisten leben seit {0} Jahren auf dem Planeten!</DM.Message.TodaySettlement>
+  <DM.Message.TodayMarriageAnniversary>Heute ist der Hochzeitstag von {0} und {1}!</DM.Message.TodayMarriageAnniversary>
+  <DM.Message.TodayRelationshipAnniversary>Der Jahrestag zwischen {0} und {1}findet heute statt!</DM.Message.TodayRelationshipAnniversary>
+
+  <!-- letter -->
+  <DM.Letter.PartyTitle>Party</DM.Letter.PartyTitle>
+  <DM.Letter.Party>{0} findet gerade statt!</DM.Letter.Party>
+  <DM.Letter.BirthdayParty>{0}s Geburtstag</DM.Letter.BirthdayParty>
+  <DM.Letter.SettlementParty>Die Party der Kolonie</DM.Letter.SettlementParty>
+  <DM.Letter.RelationshipAnniversaryParty>Jahrestagsparty von {0} und {1}'</DM.Letter.RelationshipAnniversaryParty>
+  <DM.Letter.MarriageAnniversaryParty>Hochzeitstagsparty von {0} und {1}</DM.Letter.MarriageAnniversaryParty>
+  <DM.Letter.CustomDayParty>Eine Party für {0}</DM.Letter.CustomDayParty>
+
+  <!-- settings -->
+  <DM.Settings.PrivateAnniversaries>The world of two</DM.Settings.PrivateAnniversaries>
+  <DM.Settings.PrivateAnniversaries.Desc>Unabhängige Personen besuchen keine Jubiläumspartys.</DM.Settings.PrivateAnniversaries.Desc>
+
+</LanguageData>
